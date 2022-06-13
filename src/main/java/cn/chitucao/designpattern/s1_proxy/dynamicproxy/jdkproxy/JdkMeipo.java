@@ -6,22 +6,31 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
- * Created by Tom.
+ * Proxy  用于创建代理对象1
  */
 public class JdkMeipo implements InvocationHandler {
     private IPerson target;
 
-    // 获取代理对象实例
-    public IPerson getInstance(IPerson target){
+    /**
+     * ClassLoader 原始类加载器
+     * interfaces  原始类的接口
+     * InvocationHandler  代理方法
+     */
+    public IPerson getInstance(IPerson target) {
         this.target = target;
-        Class<?> clazz =  target.getClass();
-        return (IPerson) Proxy.newProxyInstance(clazz.getClassLoader(),clazz.getInterfaces(),this);
+        Class<?> clazz = target.getClass();
+        return (IPerson) Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), this);
     }
 
+    /**
+     * proxy    原始类
+     * method   原始类的方法
+     * args     原始类的方法参数
+     */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         before();
-        Object result = method.invoke(this.target,args);
+        Object result = method.invoke(this.target, args);
         after();
         return result;
     }
